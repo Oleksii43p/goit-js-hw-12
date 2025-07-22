@@ -1,0 +1,8 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto;
+}
+.hidden {
+  display: none;
+}
