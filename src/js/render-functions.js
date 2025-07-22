@@ -5,6 +5,7 @@ let lightbox;
 
 const galleryElement = document.querySelector('.gallery');
 const loaderElement = document.querySelector('.loader');
+const loadMoreButton = document.querySelector('.load-more');
 
 export const createGallery = images => {
   const markup = images
@@ -46,3 +47,12 @@ export const showLoader = () => {
 export const hideLoader = () => {
   loaderElement.classList.add('hidden');
 };
+
+export const showLoadMoreButton = () => {
+  loadMoreButton.classList.remove('hidden');
+};
+
+export const hideLoadMoreButton = () => {
+  loadMoreButton.classList.add('hidden');
+};
+
