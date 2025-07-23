@@ -121,51 +121,34 @@ refs.button.addEventListener('click', onLoadMore);
 // funny moment
 
 const input = document.querySelector('input[name="search-text"]');
-const searchBtn = document.querySelector('button[type="submit"]');
-const audio = new Audio('./sounds/run.mp3');
-
-function moveButton() {
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-
-  const randomX = Math.floor(
-    Math.random() * (windowWidth - searchBtn.offsetWidth)
-  );
-  const randomY = Math.floor(
-    Math.random() * (windowHeight - searchBtn.offsetHeight)
-  );
-
-  searchBtn.style.position = 'fixed';
-  searchBtn.style.left = `${randomX}px`;
-  searchBtn.style.top = `${randomY}px`;
-}
-
-function shakeButton(times = 6, distance = 5, speed = 40) {
-  let count = 0;
-  const startX = parseInt(searchBtn.style.left, 10) || searchBtn.offsetLeft;
-  const startY = parseInt(searchBtn.style.top, 10) || searchBtn.offsetTop;
-
-  const interval = setInterval(() => {
-    const offsetX = (Math.random() - 0.5) * distance * 2;
-    const offsetY = (Math.random() - 0.5) * distance * 2;
-    searchBtn.style.left = `${startX + offsetX}px`;
-    searchBtn.style.top = `${startY + offsetY}px`;
-
-    count++;
-    if (count >= times) {
-      clearInterval(interval);
-      searchBtn.style.left = `${startX}px`;
-      searchBtn.style.top = `${startY}px`;
-    }
-  }, speed);
-}
+const searchBtn = document.querySelector('.search-btn');
+const wrapper = document.querySelector('.input-wrapper');
 
 searchBtn.addEventListener('mouseenter', () => {
-  if (!input.value.trim()) {
-    moveButton();
-    shakeButton();
-    audio.currentTime = 0;
-    audio.play();
+  const value = input.value.trim();
+
+  if (value.length === 0) {
+    const btnWidth = searchBtn.offsetWidth;
+    const btnHeight = searchBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    searchBtn.style.position = 'fixed';
+    searchBtn.style.left = `${randomX}px`;
+    searchBtn.style.top = `${randomY}px`;
   }
 });
 
+input.addEventListener('input', () => {
+  const value = input.value.trim();
+
+  if (value.length > 0) {
+    searchBtn.style.position = 'absolute';
+    searchBtn.style.left = '100%';
+    searchBtn.style.top = '0';
+  }
+});
