@@ -23,7 +23,9 @@ let totalPages = 0;
 
 const onFormSubmit = async event => {
   event.preventDefault();
+
   hideLoadMoreButton();
+  refs.button.removeEventListener('click', onLoadMore);
 
   currentQuery = event.target.elements['search-text'].value.trim();
 
@@ -39,6 +41,8 @@ const onFormSubmit = async event => {
   clearGallery();
   currentPage = 1;
   showLoader();
+  await new Promise(requestAnimationFrame);
+  const data = await getImagesByQuery(currentQuery, currentPage);
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
@@ -58,7 +62,9 @@ const onFormSubmit = async event => {
 
     if (totalPages > 1) {
       showLoadMoreButton();
+      refs.button.addEventListener('click', onLoadMore);
     } else {
+      hideLoadMoreButton();
       iziToast.info({
         title: 'End of results',
         message: "We're sorry, but you've reached the end of search results.",
@@ -80,6 +86,8 @@ const onFormSubmit = async event => {
 const onLoadMore = async () => {
   currentPage += 1;
   showLoader();
+  await new Promise(requestAnimationFrame);
+  const data = await getImagesByQuery(currentQuery, currentPage);
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
@@ -96,6 +104,7 @@ const onLoadMore = async () => {
     });
 
     if (currentPage >= totalPages) {
+      refs.button.removeEventListener('click', onLoadMore);
       hideLoadMoreButton();
       iziToast.info({
         title: 'End of results',
@@ -116,9 +125,9 @@ const onLoadMore = async () => {
 };
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.button.addEventListener('click', onLoadMore);
+// refs.button.addEventListener('click', onLoadMore);
 
-// funny moment
+// === funny moment ===
 
 const input = document.querySelector('input[name="search-text"]');
 const searchBtn = document.querySelector('.search-btn');

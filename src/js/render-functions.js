@@ -41,11 +41,13 @@ export const clearGallery = () => {
 };
 
 export const showLoader = () => {
-  loaderElement.classList.remove('hidden');
+  const loader = document.querySelector('.loader');
+  loader.classList.remove('hidden');
 };
 
 export const hideLoader = () => {
-  loaderElement.classList.add('hidden');
+  const loader = document.querySelector('.loader');
+  loader.classList.add('hidden');
 };
 
 export const showLoadMoreButton = () => {
@@ -55,4 +57,3 @@ export const showLoadMoreButton = () => {
 export const hideLoadMoreButton = () => {
   loadMoreButton.classList.add('hidden');
 };
-
